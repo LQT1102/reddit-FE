@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import React, { useEffect } from 'react'
 import { useMeQuery } from "../generated/graphql";
 
+const UN_AUTHEN_ROUTES = ["/login", "/register", "/forgot-password"]
 
 export default function useCheckAuth() {
     const router = useRouter();
@@ -10,7 +11,7 @@ export default function useCheckAuth() {
     const {data, loading} = useMeQuery();
 
     useEffect(() => {
-        if(!loading && data?.me &&  (router.route === "/login" || router.route === "/register")){
+        if(!loading && data?.me &&  UN_AUTHEN_ROUTES.includes(router.route)){
             router.replace("/")
         }
     })
