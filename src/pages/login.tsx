@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { Button, Flex, Spinner, Text, useToast } from "@chakra-ui/react";
+import { Button, Flex, Link, Spinner, Text, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import UnauthenWrapper from "../components/bases/UnauthenWrapper";
@@ -12,7 +12,7 @@ import {
     useLoginMutation,
 } from "../generated/graphql";
 import { setFieldErrors } from "../helpers/setFieldErrors";
-import useCheckAuth from "../hooks/useCheckAuth";
+import NextLink from "next/link";
 
 type Props = {};
 
@@ -84,14 +84,20 @@ export default function Login({}: Props) {
                         placeholder="Password"
                         type={"password"}
                     />
-                    <Button
-                        type="submit"
-                        colorScheme={"teal"}
-                        mt={4}
-                        isLoading={formMethods.formState.isSubmitting}
-                    >
-                        Submit
-                    </Button>
+                    <Flex justify={"space-between"}>
+                        <Button
+                            type="submit"
+                            colorScheme={"teal"}
+                            mt={4}
+                            isLoading={formMethods.formState.isSubmitting}
+                        >
+                            Submit
+                        </Button>
+
+                        <NextLink href={"/forgot-password"}>
+                            <Link>Forgot password</Link>
+                        </NextLink>
+                    </Flex>
                 </form>
             </Wrapper>
         </UnauthenWrapper>
