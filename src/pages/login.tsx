@@ -67,7 +67,7 @@ export default function Login({}: Props) {
 
     return (
         <UnauthenWrapper>
-            <Wrapper>
+            <Wrapper size="small">
                 {data?.login.errors?.length && <Text>Failed to login</Text>}
                 <form onSubmit={formMethods.handleSubmit(onLoginSubmit)}>
                     <InputField

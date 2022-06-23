@@ -61,7 +61,7 @@ export default function Register({}: Props) {
 
     return (
         <UnauthenWrapper>
-            <Wrapper>
+            <Wrapper size="small">
                 {data?.register.errors?.length && (
                     <Text>Failed to register</Text>
                 )}

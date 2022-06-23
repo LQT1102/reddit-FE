@@ -27,7 +27,7 @@ export default function ForgotPassword({}: Props) {
 
     return (
         <UnauthenWrapper>
-            <Wrapper>
+            <Wrapper size="small">
                 {!loading && data ? (
                     <Box>Please check your mailbox</Box>
                 ) : (

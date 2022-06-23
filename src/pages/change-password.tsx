@@ -61,37 +61,33 @@ export default function ChangePassword({}: Props) {
     };
 
     return (
-        <UnauthenWrapper>
-            <Wrapper>
-                <form
-                    onSubmit={formMethods.handleSubmit(onChangePasswordSubmit)}
-                >
-                    <InputField
-                        control={formMethods.control}
-                        label="New password"
-                        name="newPassword"
-                        placeholder="New password"
-                        type={"password"}
-                    />
+        <Wrapper size="small">
+            <form onSubmit={formMethods.handleSubmit(onChangePasswordSubmit)}>
+                <InputField
+                    control={formMethods.control}
+                    label="New password"
+                    name="newPassword"
+                    placeholder="New password"
+                    type={"password"}
+                />
 
-                    <Box color={"red"}>{commonError}</Box>
+                <Box color={"red"}>{commonError}</Box>
 
-                    <Flex justify={"space-between"}>
-                        <Button
-                            type="submit"
-                            colorScheme={"teal"}
-                            mt={4}
-                            isLoading={formMethods.formState.isSubmitting}
-                        >
-                            Submit
-                        </Button>
+                <Flex justify={"space-between"}>
+                    <Button
+                        type="submit"
+                        colorScheme={"teal"}
+                        mt={4}
+                        isLoading={formMethods.formState.isSubmitting}
+                    >
+                        Submit
+                    </Button>
 
-                        <NextLink href={"/forgot-password"}>
-                            <Link>Go back to Forgot password</Link>
-                        </NextLink>
-                    </Flex>
-                </form>
-            </Wrapper>
-        </UnauthenWrapper>
+                    <NextLink href={"/forgot-password"}>
+                        <Link>Go back to Forgot password</Link>
+                    </NextLink>
+                </Flex>
+            </form>
+        </Wrapper>
     );
 }
