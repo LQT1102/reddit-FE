@@ -4,6 +4,7 @@ import { onError } from '@apollo/client/link/error'
 import { concatPagination } from '@apollo/client/utilities'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
+import { Post } from "../generated/graphql"
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
@@ -37,6 +38,24 @@ function createApolloClient() {
         Query: {
           fields: {
             allPosts: concatPagination(),
+            posts: {
+              keyArgs: false,
+              merge(existsing, incoming){
+                // console.log(existsing);
+                // console.log(incoming);
+
+                let paginatedPosts: Post[] = [];
+                if(existsing && existsing.paginatedPosts){
+                  paginatedPosts = paginatedPosts.concat(existsing.paginatedPosts)
+                }
+
+                if(incoming && incoming.paginatedPosts){
+                  paginatedPosts = paginatedPosts.concat(incoming.paginatedPosts)
+                }
+
+                return {...incoming, paginatedPosts}
+              }
+            }
           },
         },
       },
