@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Link, Text } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
-import UnauthenWrapper from "../components/bases/UnauthenWrapper";
+import CheckAuthenWrapper from "../components/bases/CheckAuthenWrapper";
 import Wrapper from "../components/bases/Wrapper";
 import InputField from "../components/fields/InputField";
 import {
@@ -26,7 +26,7 @@ export default function ForgotPassword({}: Props) {
     };
 
     return (
-        <UnauthenWrapper>
+        <CheckAuthenWrapper>
             <Wrapper size="small">
                 {!loading && data ? (
                     <Box>Please check your mailbox</Box>
@@ -60,6 +60,6 @@ export default function ForgotPassword({}: Props) {
                     </form>
                 )}
             </Wrapper>
-        </UnauthenWrapper>
+        </CheckAuthenWrapper>
     );
 }

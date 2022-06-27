@@ -5,5 +5,5 @@ fragment userMutationResponse on UserMutationResponse {
     errors {
         ...fieldError
     }
-    ...mutationStatuses
+    ...userMutationStatuses
 }

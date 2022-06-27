@@ -28,7 +28,9 @@ type AElement = A[0];
 
 type Props = NonNullable<
     NonNullable<NonNullable<PostsQuery["posts"]>["paginatedPosts"]>
->[0];
+>[0] & {
+    editable?: boolean;
+};
 
 export default function PostItem({
     id,
@@ -37,6 +39,7 @@ export default function PostItem({
     textSnippet,
     title,
     user: { username },
+    editable,
 }: Props) {
     return (
         <ListItem key={id} shadow={"md"} borderWidth={"1px"}>
@@ -76,20 +79,24 @@ export default function PostItem({
                         <Text mt={4}>{textSnippet}</Text>
                     </Flex>
                 </Box>
-                <Menu placement="bottom-end">
-                    <MenuButton
-                        as={IconButton}
-                        aria-label="drop"
-                        size="sm"
-                        colorScheme={"gray"}
-                        bg={"#ffffff"}
-                        icon={<ChevronDownIcon />}
-                    />
-                    <MenuList w={"auto"} minW={0}>
-                        <MenuItem icon={<EditIcon />}>Edit</MenuItem>
-                        <MenuItem icon={<DeleteIcon />}>Delete</MenuItem>
-                    </MenuList>
-                </Menu>
+                {editable && (
+                    <Menu placement="bottom-end">
+                        <MenuButton
+                            as={IconButton}
+                            aria-label="drop"
+                            size="sm"
+                            colorScheme={"gray"}
+                            bg={"#ffffff"}
+                            icon={<ChevronDownIcon />}
+                        />
+                        <MenuList w={"auto"} minW={0}>
+                            <NextLink href={`/post/edit/${id}`}>
+                                <MenuItem icon={<EditIcon />}>Edit</MenuItem>
+                            </NextLink>
+                            <MenuItem icon={<DeleteIcon />}>Delete</MenuItem>
+                        </MenuList>
+                    </Menu>
+                )}
             </Flex>
         </ListItem>
     );

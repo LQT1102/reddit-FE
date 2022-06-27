@@ -3,7 +3,6 @@ import NextLink from "Next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import UnauthenWrapper from "../components/bases/UnauthenWrapper";
 import Wrapper from "../components/bases/Wrapper";
 import InputField from "../components/fields/InputField";
 import {

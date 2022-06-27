@@ -1,31 +1,20 @@
+import { NetworkStatus } from "@apollo/client";
+import { Button, Flex, List, Spinner, Stack } from "@chakra-ui/react";
+import { GetStaticProps } from "next";
+import Layout from "../components/bases/Layout";
+import PostItem from "../components/bases/PostItem";
 import {
-    Box,
-    Button,
-    Flex,
-    Heading,
-    Link,
-    List,
-    ListItem,
-    Spinner,
-    Stack,
-    Text,
-} from "@chakra-ui/react";
-import Navbar from "../components/bases/Navbar";
-import {
-    Post,
     PostsDocument,
     PostsQuery,
     QueryPostsArgs,
+    useMeQuery,
     usePostsQuery,
 } from "../generated/graphql";
 import { addApolloState, initializeApollo } from "../lib/apolloClient";
-import NextLink from "next/link";
-import Layout from "../components/bases/Layout";
-import PostItem from "../components/bases/PostItem";
-import { NetworkStatus, QueryOptions } from "@apollo/client";
 
-const limit = 1;
+export const limit = 3;
 const Index = () => {
+    const { data: meData } = useMeQuery();
     const { data, loading, fetchMore, networkStatus } = usePostsQuery({
         variables: { limit },
         notifyOnNetworkStatusChange: true,
@@ -49,7 +38,11 @@ const Index = () => {
                 <Stack>
                     <List spacing={8}>
                         {data?.posts?.paginatedPosts.map((i) => (
-                            <PostItem key={i.id} {...i} />
+                            <PostItem
+                                key={i.id}
+                                {...i}
+                                editable={meData?.me?.id === i.user.id}
+                            />
                         ))}
                     </List>
 
@@ -72,7 +65,7 @@ const Index = () => {
     );
 };
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
     const apolloClient = initializeApollo();
 
     await apolloClient.query<PostsQuery, QueryPostsArgs>({

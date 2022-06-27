@@ -8,14 +8,17 @@ const UN_AUTHEN_ROUTES = ["/login", "/register", "/forgot-password"]
 export default function useCheckAuth() {
     const router = useRouter();
 
-    const {data, loading} = useMeQuery();
+    const {data, loading = true} = useMeQuery();
 
     useEffect(() => {
-        if(!loading && data?.me &&  UN_AUTHEN_ROUTES.includes(router.route)){
+        if(!loading && data?.me && UN_AUTHEN_ROUTES.includes(router.route)){
             router.replace("/")
         }
-    })
 
-    return {data, loading}
-  
+        else if(!loading && !data?.me){
+            router.replace("/login")
+        }
+    }, [data, loading])
+
+    return {data, loading: loading || (!data?.me && !UN_AUTHEN_ROUTES.includes(router.route)) || (data?.me && UN_AUTHEN_ROUTES.includes(router.route))}
 }

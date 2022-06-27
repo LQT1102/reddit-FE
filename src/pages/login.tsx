@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import { Button, Flex, Link, Spinner, Text, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import UnauthenWrapper from "../components/bases/UnauthenWrapper";
+import CheckAuthenWrapper from "../components/bases/CheckAuthenWrapper";
 import Wrapper from "../components/bases/Wrapper";
 import InputField from "../components/fields/InputField";
 import {
@@ -66,7 +66,7 @@ export default function Login({}: Props) {
     };
 
     return (
-        <UnauthenWrapper>
+        <CheckAuthenWrapper>
             <Wrapper size="small">
                 {data?.login.errors?.length && <Text>Failed to login</Text>}
                 <form onSubmit={formMethods.handleSubmit(onLoginSubmit)}>
@@ -100,6 +100,6 @@ export default function Login({}: Props) {
                     </Flex>
                 </form>
             </Wrapper>
-        </UnauthenWrapper>
+        </CheckAuthenWrapper>
     );
 }

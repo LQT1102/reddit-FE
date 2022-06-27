@@ -6,10 +6,10 @@ type Props = {
     children: ReactNode;
 };
 
-export default function UnauthenWrapper({ children }: Props) {
-    const { data: authData, loading: authLoading } = useCheckAuth();
+export default function CheckAuthenWrapper({ children }: Props) {
+    const { loading: authLoading } = useCheckAuth();
 
-    if (authLoading || (!authLoading && authData?.me))
+    if (authLoading)
         return (
             <Flex justify={"center"} align={"center"} minH={"100vh"}>
                 <Spinner />

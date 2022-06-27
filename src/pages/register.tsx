@@ -1,7 +1,7 @@
-import { Button, Flex, Spinner, Text, useToast } from "@chakra-ui/react";
+import { Button, Text, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import UnauthenWrapper from "../components/bases/UnauthenWrapper";
+import CheckAuthenWrapper from "../components/bases/CheckAuthenWrapper";
 import Wrapper from "../components/bases/Wrapper";
 import InputField from "../components/fields/InputField";
 import {
@@ -11,7 +11,6 @@ import {
     useRegisterMutation,
 } from "../generated/graphql";
 import { setFieldErrors } from "../helpers/setFieldErrors";
-import useCheckAuth from "../hooks/useCheckAuth";
 
 type Props = {};
 
@@ -60,7 +59,7 @@ export default function Register({}: Props) {
     };
 
     return (
-        <UnauthenWrapper>
+        <CheckAuthenWrapper>
             <Wrapper size="small">
                 {data?.register.errors?.length && (
                     <Text>Failed to register</Text>
@@ -100,6 +99,6 @@ export default function Register({}: Props) {
                     </Button>
                 </form>
             </Wrapper>
-        </UnauthenWrapper>
+        </CheckAuthenWrapper>
     );
 }
