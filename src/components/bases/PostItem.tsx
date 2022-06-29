@@ -2,6 +2,7 @@ import {
     ArrowDownIcon,
     ArrowUpIcon,
     ChevronDownIcon,
+    ChevronUpIcon,
     DeleteIcon,
     EditIcon,
 } from "@chakra-ui/icons";
@@ -20,7 +21,9 @@ import {
     Text,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { PostsQuery } from "../../generated/graphql";
+import { useState } from "react";
+import { PostsQuery, useVoteMutation, VoteType } from "../../generated/graphql";
+import PostMenu from "./PostMenu";
 
 type A = { a: string; b: number }[];
 
@@ -32,35 +35,67 @@ type Props = NonNullable<
     editable?: boolean;
 };
 
-export default function PostItem({
+const PostItem = ({
     id,
     createdAt,
     text,
     textSnippet,
     title,
-    user: { username },
+    user: { username, id: userId },
     editable,
-}: Props) {
+    points,
+    votedType,
+}: Props) => {
+    const [vote, { loading: voteLoading }] = useVoteMutation();
+
+    const [voteLoadingType, setVoteLoadingType] = useState<
+        VoteType.Upvote | VoteType.DownVote | "NotLoading"
+    >("NotLoading");
+
+    const handleVote = async (postId: string, type: VoteType) => {
+        if (type === votedType) return;
+        setVoteLoadingType(type);
+        await vote({
+            variables: {
+                voteType: type,
+                postId: +postId,
+            },
+        });
+        setVoteLoadingType("NotLoading");
+    };
+
     return (
         <ListItem key={id} shadow={"md"} borderWidth={"1px"}>
             <Flex p={5} gap={2}>
                 <Flex direction={"column"} justify={"center"}>
                     <IconButton
                         size={"sm"}
-                        color={"red.300"}
+                        color={
+                            votedType === VoteType.Upvote ? "red.300" : "gray"
+                        }
                         aria-label=""
                         bg={"#ffffff"}
-                        icon={<ArrowUpIcon />}
+                        icon={<ChevronUpIcon />}
+                        onClick={handleVote.bind(this, id, VoteType.Upvote)}
+                        isLoading={
+                            voteLoading && voteLoadingType === VoteType.Upvote
+                        }
                     />
                     <Center color={"red.300"} fontWeight={"bold"}>
-                        1
+                        {points}
                     </Center>
                     <IconButton
-                        color={"gray"}
+                        color={
+                            votedType === VoteType.DownVote ? "red.300" : "gray"
+                        }
                         size={"sm"}
                         aria-label=""
                         bg={"#ffffff"}
-                        icon={<ArrowDownIcon />}
+                        icon={<ChevronDownIcon />}
+                        onClick={handleVote.bind(this, id, VoteType.DownVote)}
+                        isLoading={
+                            voteLoading && voteLoadingType === VoteType.DownVote
+                        }
                     />
                 </Flex>
                 <Box flex={1} minW={0}>
@@ -79,25 +114,10 @@ export default function PostItem({
                         <Text mt={4}>{textSnippet}</Text>
                     </Flex>
                 </Box>
-                {editable && (
-                    <Menu placement="bottom-end">
-                        <MenuButton
-                            as={IconButton}
-                            aria-label="drop"
-                            size="sm"
-                            colorScheme={"gray"}
-                            bg={"#ffffff"}
-                            icon={<ChevronDownIcon />}
-                        />
-                        <MenuList w={"auto"} minW={0}>
-                            <NextLink href={`/post/edit/${id}`}>
-                                <MenuItem icon={<EditIcon />}>Edit</MenuItem>
-                            </NextLink>
-                            <MenuItem icon={<DeleteIcon />}>Delete</MenuItem>
-                        </MenuList>
-                    </Menu>
-                )}
+                {editable && <PostMenu id={id} postUserId={userId} />}
             </Flex>
         </ListItem>
     );
-}
+};
+
+export default PostItem;

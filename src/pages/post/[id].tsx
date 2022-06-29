@@ -1,39 +1,28 @@
-import {
-    Alert,
-    AlertIcon,
-    AlertTitle,
-    Box,
-    Flex,
-    Heading,
-    Link,
-    Spinner,
-    Text,
-} from "@chakra-ui/react";
+import { Flex, Heading, Link, Text } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps } from "next";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { ParsedUrlQuery } from "querystring";
-import React from "react";
 import { limit } from "..";
+import AlertErrorWithLayout from "../../components/bases/AlertErrorWithLayout";
 import Layout from "../../components/bases/Layout";
+import LayoutSpinner from "../../components/bases/LayoutSpinner";
+import PostMenu from "../../components/bases/PostMenu";
 import {
+    PostDocument,
+    PostIdsDocument,
     PostIdsQuery,
     PostQuery,
     PostQueryVariables,
-    QueryPostArgs,
     QueryPostsArgs,
-    usePostIdsQuery,
     usePostQuery,
 } from "../../generated/graphql";
 import { addApolloState, initializeApollo } from "../../lib/apolloClient";
-import { PostIdsDocument, PostDocument } from "../../generated/graphql";
-import NextLink from "next/link";
-import LayoutSpinner from "../../components/bases/LayoutSpinner";
-import AlertErrorWithLayout from "../../components/bases/AlertErrorWithLayout";
 
 type Props = {};
 
 export default function Post({}: Props) {
     const router = useRouter();
+
     const {
         data,
         error,
@@ -57,12 +46,17 @@ export default function Post({}: Props) {
     }
     return (
         <Layout>
-            <Heading mb={4}>{data.post.title}</Heading>
+            <Flex align={"center"}>
+                <Heading flex={1} mb={4}>
+                    {data.post.title}
+                </Heading>
+                <PostMenu
+                    id={data.post.id}
+                    postUserId={data.post.userId + ""}
+                />
+            </Flex>
             <Text>{data.post.text}</Text>
-            <Flex justify={"space-between"} color={"gray"} mt={4}>
-                <NextLink href={`/post/edit/${data.post.id}`}>
-                    <Link>Edit</Link>
-                </NextLink>
+            <Flex justify={"flex-end"} color={"gray"} mt={4}>
                 <NextLink href={"/"}>
                     <Link>Back to Homepage</Link>
                 </NextLink>

@@ -1,6 +1,10 @@
 import { NetworkStatus } from "@apollo/client";
 import { Button, Flex, List, Spinner, Stack } from "@chakra-ui/react";
-import { GetStaticProps } from "next";
+import {
+    GetServerSideProps,
+    GetServerSidePropsContext,
+    GetStaticProps,
+} from "next";
 import Layout from "../components/bases/Layout";
 import PostItem from "../components/bases/PostItem";
 import {
@@ -65,10 +69,15 @@ const Index = () => {
     );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (
+    context: GetServerSidePropsContext
+) => {
+    const Cookie = context.req.headers.cookie;
+
     const apolloClient = initializeApollo();
 
     await apolloClient.query<PostsQuery, QueryPostsArgs>({
+        context: { headers: { Cookie } },
         query: PostsDocument,
         variables: { limit },
 
