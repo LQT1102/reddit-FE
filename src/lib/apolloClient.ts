@@ -5,6 +5,7 @@ import { concatPagination } from '@apollo/client/utilities'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
 import { Post } from "../generated/graphql"
+import Router from "next/router"
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
@@ -21,11 +22,14 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
       )
     )
+    if(graphQLErrors && graphQLErrors[0].extensions?.code === "UNAUTHENTICATED"){
+      Router.replace("/login")
+    }
   if (networkError) console.log(`[Network error]: ${networkError}`)
 })
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql', // Server URL (must be absolute)
+  uri: process.env.NODE_ENV === 'production'? 'https://reddit-lqtuan.herokuapp.com/graphql' :'http://localhost:4000/graphql', // Server URL (must be absolute)
   credentials: 'include', // Additional fetch() options like `credentials` or `headers`
 })
 

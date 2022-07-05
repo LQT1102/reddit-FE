@@ -53,15 +53,16 @@ const PostItem = ({
     >("NotLoading");
 
     const handleVote = async (postId: string, type: VoteType) => {
-        if (type === votedType) return;
-        setVoteLoadingType(type);
-        await vote({
-            variables: {
-                voteType: type,
-                postId: +postId,
-            },
-        });
-        setVoteLoadingType("NotLoading");
+        try {
+            setVoteLoadingType(type);
+            await vote({
+                variables: {
+                    voteType: type,
+                    postId: +postId,
+                },
+            });
+            setVoteLoadingType("NotLoading");
+        } catch (error) {}
     };
 
     return (

@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Link, useToast } from "@chakra-ui/react";
-import NextLink from "Next/link";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

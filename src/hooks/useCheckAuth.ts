@@ -15,7 +15,7 @@ export default function useCheckAuth() {
             router.replace("/")
         }
 
-        else if(!loading && !data?.me){
+        else if(!loading && !data?.me && !UN_AUTHEN_ROUTES.includes(router.route)){
             router.replace("/login")
         }
     }, [data, loading])
