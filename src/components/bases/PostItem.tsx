@@ -1,11 +1,4 @@
-import {
-    ArrowDownIcon,
-    ArrowUpIcon,
-    ChevronDownIcon,
-    ChevronUpIcon,
-    DeleteIcon,
-    EditIcon,
-} from "@chakra-ui/icons";
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
     Box,
     Center,
@@ -14,20 +7,12 @@ import {
     IconButton,
     Link,
     ListItem,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuList,
     Text,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useState } from "react";
 import { PostsQuery, useVoteMutation, VoteType } from "../../generated/graphql";
 import PostMenu from "./PostMenu";
-
-type A = { a: string; b: number }[];
-
-type AElement = A[0];
 
 type Props = NonNullable<
     NonNullable<NonNullable<PostsQuery["posts"]>["paginatedPosts"]>
